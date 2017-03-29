@@ -14,7 +14,7 @@ class Usuario(models.Model):
     user = models.OneToOneField(User)
     # M | F
     genero = models.CharField(max_length=1)
-    numentradas = models.IntegerField()
+    numentradas = models.IntegerField(blank=True)
 
     def __str__(self):
         return self.user.username

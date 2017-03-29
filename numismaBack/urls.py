@@ -13,9 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+# VERY IMPORTANT, development ONLY, GUNICORN should not go upfront in production, NGINX should
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+# end very important
+
+from django.conf.urls import url, include
 from django.contrib import admin
+
+from rest_framework import routers
+from rest_framework.authtoken import views as rest_views
+
+from numisma.views import UsuarioDetail, UsuarioList
+
+router = routers.DefaultRouter()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^', include(router.urls)),
+    url(r'^api/usuarios/(?P<pk>[0-9]+)/$', UsuarioDetail.as_view(), name='usuario-detail'),
+    url(r'^api/usuarios/$', UsuarioList.as_view()),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
+
+# VERY IMPORTANT, development ONLY, GUNICORN should not go upfront in production, NGINX should
+urlpatterns += staticfiles_urlpatterns()
+# end very important
