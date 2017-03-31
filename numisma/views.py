@@ -29,8 +29,7 @@ class UsuarioList(APIView):
         if serializer.is_valid():
             user = User(first_name = serializer.data['first_name'], \
                         last_name = serializer.data['last_name'],   \
-                        username = serializer.data['username'],     \
-                        email = serializer.data['email'])
+                        username = serializer.data['username'])
             user.set_password(serializer.data['password'])
             user.save()
             usuario = Usuario(user = user, genero = serializer.data['genero'], numentradas = 0)
@@ -64,7 +63,6 @@ class UsuarioDetail(APIView):
             user = usuario.user
             user.first_name = serializer.data['first_name']
             user.last_name = serializer.data['last_name']
-            user.email = serializer.data['email']
             user.save()
             usuario.genero = serializer.data['genero']
             usuario.save()
@@ -76,3 +74,17 @@ class UsuarioDetail(APIView):
         self.check_object_permissions(self.request, usuario)
         usuario.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def get_usuario_authenticated(request):
+    """
+    Retrieve customer instance given the auth token.
+    """
+    try:
+        user = request.user
+        usuario = Usuario.objects.filter(user__id__exact=user.id).first()
+    except Usuario.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    serializer = UsuarioSerializer(usuario)
+    return Response(serializer.data)
