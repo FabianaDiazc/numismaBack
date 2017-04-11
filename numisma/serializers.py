@@ -1,4 +1,4 @@
-from numisma.models import Usuario
+from numisma.models import Usuario, Objeto
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
@@ -15,3 +15,9 @@ class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usuario
         fields  = fields = ('id', 'username', 'first_name', 'last_name', 'genero', 'numentradas', 'password')
+
+class ObjetoSerializer(serializers.HyperlinkedModelSerializer):
+
+    class Meta:
+        model = Objeto
+        fields  = fields = ('id', 'nombre', 'imagen', 'valor')

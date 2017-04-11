@@ -6,16 +6,14 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 
-from numisma.serializers import UsuarioSerializer
-from numisma.models import Usuario
+from numisma.serializers import UsuarioSerializer, ObjetoSerializer
+from numisma.models import Usuario, Objeto
 from numisma.permissions import IsOwnerOrReadOnly
-from rest_framework import permissions
-
+from rest_framework import permissions, status, generics
 # two class based views.
 class UsuarioList(APIView):
-
+    permission_classes = (permissions.AllowAny, )
     """
         List all usuairos or create new usuario endpoint
     """
@@ -88,3 +86,14 @@ def get_usuario_authenticated(request):
         
     serializer = UsuarioSerializer(usuario)
     return Response(serializer.data)
+
+
+class ObjetoList(generics.ListCreateAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = Objeto.objects.all()
+    serializer_class = ObjetoSerializer
+
+
+class ObjetoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Objeto.objects.all()
+    serializer_class = ObjetoSerializer

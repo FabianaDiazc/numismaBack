@@ -24,6 +24,9 @@ from rest_framework import routers
 from rest_framework.authtoken import views as rest_views
 
 from numisma.views import UsuarioDetail, UsuarioList, get_usuario_authenticated
+from numisma.views import ObjetoDetail, ObjetoList
+from django.conf.urls.static import static
+from django.conf import settings
 
 router = routers.DefaultRouter()
 
@@ -35,7 +38,9 @@ urlpatterns = [
     url(r'^api/usuario/authenticated/$', get_usuario_authenticated),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/token-auth/', rest_views.obtain_auth_token),
-]
+    url(r'^api/objetos/(?P<pk>[0-9]+)/$', ObjetoDetail.as_view()),
+    url(r'^api/objetos/$', ObjetoList.as_view()),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # VERY IMPORTANT, development ONLY, GUNICORN should not go upfront in production, NGINX should
 urlpatterns += staticfiles_urlpatterns()
