@@ -7,8 +7,8 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from numisma.serializers import UsuarioSerializer, ObjetoSerializer
-from numisma.models import Usuario, Objeto
+from numisma.serializers import UsuarioSerializer, ObjetoSerializer, AvatarSerializer, UsuarioDTOSerializer
+from numisma.models import Usuario, Objeto, Avatar
 from numisma.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions, status, generics
 # two class based views.
@@ -23,7 +23,7 @@ class UsuarioList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format = None):
-        serializer = UsuarioSerializer(data = request.data)
+        serializer = UsuarioDTOSerializer(data = request.data)
         if serializer.is_valid():
             user = User(first_name = serializer.data['first_name'], \
                         last_name = serializer.data['last_name'],   \
@@ -31,6 +31,10 @@ class UsuarioList(APIView):
             user.set_password(serializer.data['password'])
             user.save()
             usuario = Usuario(user = user, genero = serializer.data['genero'], numentradas = 0)
+            avatarBalanza = Avatar.objects.filter(id = serializer.data['avatar_balanza']).first()
+            avatarRecta = Avatar.objects.filter(id = serializer.data['avatar_recta']).first()
+            usuario.avatarBalanza = avatarBalanza
+            usuario.avatarRecta = avatarRecta
             usuario.save()
             serializer = UsuarioSerializer(usuario)
             return Response(serializer.data, status = status.HTTP_201_CREATED)
@@ -97,3 +101,13 @@ class ObjetoList(generics.ListCreateAPIView):
 class ObjetoDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Objeto.objects.all()
     serializer_class = ObjetoSerializer
+
+class AvatarList(generics.ListCreateAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = Avatar.objects.all()
+    serializer_class = AvatarSerializer
+
+
+class AvatarDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Avatar.objects.all()
+    serializer_class = AvatarSerializer

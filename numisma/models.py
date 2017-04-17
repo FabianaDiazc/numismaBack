@@ -14,7 +14,8 @@ class Usuario(models.Model):
     # M | F
     genero = models.CharField(max_length=1)
     numentradas = models.IntegerField(blank=True)
-
+    avatarRecta = models.ForeignKey('Avatar', related_name='avatar_recta', blank = True, null = True)
+    avatarBalanza = models.ForeignKey('Avatar', related_name='avatar_balanza', blank = True, null = True)
     def __str__(self):
         return self.user.username
 
@@ -30,3 +31,12 @@ class Objeto(models.Model):
     nombre = models.CharField(max_length=255)
     imagen = models.ImageField()
     valor = models.IntegerField()
+
+class Avatar(models.Model):
+    TYPE_CHOICES = (
+        ('RECTA_NUMERICA', 'RECTA_NUMERICA'),
+        ('BALANZA', 'BALANZA'),
+        ('ANY', 'ANY'))
+
+    imagen = models.ImageField()
+    juego = models.CharField(max_length = 40, choices = TYPE_CHOICES)
