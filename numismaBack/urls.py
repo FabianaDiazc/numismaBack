@@ -27,6 +27,7 @@ from numisma.views import UsuarioDetail, UsuarioList, get_usuario_authenticated
 from numisma.views import ObjetoDetail, ObjetoList
 from numisma.views import AvatarDetail, AvatarList
 from django.conf.urls.static import static
+from django.views.static import serve
 from django.conf import settings
 
 router = routers.DefaultRouter()
@@ -43,8 +44,9 @@ urlpatterns = [
     url(r'^api/objetos/$', ObjetoList.as_view()),
     url(r'^api/avatars/(?P<pk>[0-9]+)/$', AvatarDetail.as_view()),
     url(r'^api/avatars/$', AvatarList.as_view()),
+    url(r'^media/(?P<path>.*)$', serve, { 'document_root': settings.MEDIA_ROOT, }),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # VERY IMPORTANT, development ONLY, GUNICORN should not go upfront in production, NGINX should
-urlpatterns += staticfiles_urlpatterns()
+#urlpatterns += staticfiles_urlpatterns()
 # end very important

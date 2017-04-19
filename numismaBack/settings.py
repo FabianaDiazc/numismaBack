@@ -25,7 +25,7 @@ SECRET_KEY = '$mynl%4g7xvlb@0u!t+ff!p4cg&931kxpsb4mhn8%eq+1$!b%a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '45.55.73.99', 'localhost' ]
+ALLOWED_HOSTS = [ '45.55.66.114', 'localhost' ]
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
@@ -132,9 +132,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATIC_URL = '/static/'
-MEDIA_ROOT = '/Users/alfredo/Documents/projects/numisma/numismaBack/media'
+MEDIA_ROOT = '/var/www/media'
 MEDIA_URL = '/media/'
 
 CORS_ORIGIN_WHITELIST = (
