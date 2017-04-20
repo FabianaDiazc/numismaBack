@@ -121,10 +121,6 @@ def get_puntajes_usuario_juego_actual(request):
             return Response(status = status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Usuario.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-        
-    serializer = UsuarioSerializer(usuario)
-    return Response(serializer.data)
-
 
 class ObjetoList(generics.ListCreateAPIView):
     permission_classes = (permissions.AllowAny, )
@@ -154,3 +150,13 @@ class NivelDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.AllowAny, )
     queryset = Nivel.objects.all()
     serializer_class = NivelSerializer
+
+class PuntajeList(generics.ListCreateAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = Puntaje.objects.all()
+    serializer_class = PuntajeSerializer
+
+class PuntajeDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = Puntaje.objects.all()
+    serializer_class = PuntajeSerializer

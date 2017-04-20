@@ -27,6 +27,7 @@ from numisma.views import UsuarioDetail, UsuarioList, get_usuario_authenticated
 from numisma.views import ObjetoDetail, ObjetoList
 from numisma.views import AvatarDetail, AvatarList
 from numisma.views import NivelDetail, NivelList
+from numisma.views import PuntajeDetail, PuntajeList
 from numisma.views import get_puntajes_usuario_juego_actual
 from django.conf.urls.static import static
 from django.views.static import serve
@@ -49,6 +50,8 @@ urlpatterns = [
     url(r'^api/niveles/(?P<pk>[0-9]+)/$', NivelDetail.as_view()),
     url(r'^api/niveles/$', NivelList.as_view()),
     url(r'^api/niveles/juego/actual/$', get_puntajes_usuario_juego_actual),
+    url(r'^api/puntajes/(?P<pk>[0-9]+)/$', PuntajeDetail.as_view()),
+    url(r'^api/puntajes/$', PuntajeList.as_view()),
     url(r'^media/(?P<path>.*)$', serve, { 'document_root': settings.MEDIA_ROOT, }),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
