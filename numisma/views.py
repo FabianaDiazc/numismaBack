@@ -8,7 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from numisma.serializers import UsuarioSerializer, ObjetoSerializer, AvatarSerializer, UsuarioDTOSerializer
-from numisma.models import Usuario, Objeto, Avatar
+from numisma.serializers import NivelSerializer, PuntajeSerializer
+from numisma.models import Usuario, Objeto, Avatar, Juego, Puntaje, Nivel
 from numisma.permissions import IsOwnerOrReadOnly
 from rest_framework import permissions, status, generics
 # two class based views.
@@ -36,9 +37,21 @@ class UsuarioList(APIView):
             usuario.avatarBalanza = avatarBalanza
             usuario.avatarRecta = avatarRecta
             usuario.save()
+            self.create_juego(usuario)
             serializer = UsuarioSerializer(usuario)
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+    def create_juego(self, usuario):
+        juego = Juego(estado = 'EN_PROGRESO', usuario = usuario)
+        juego.save()
+        for currNivel in Nivel.objects.all():
+            if currNivel.nombre == 'RECTA_NUMERICA' and currNivel.tipo == 'M':
+                puntaje = Puntaje(estado = 'EN_PROGRESO', juego = juego, nivel = currNivel)
+            else:
+                puntaje = Puntaje(estado = 'BLOQUEADO', juego = juego, nivel = currNivel)
+            puntaje.save()
+
 
 class UsuarioDetail(APIView):
     """
@@ -80,11 +93,32 @@ class UsuarioDetail(APIView):
 @api_view(['GET'])
 def get_usuario_authenticated(request):
     """
-    Retrieve customer instance given the auth token.
+    Devuelve la instancia de un usuario dado el token.
     """
     try:
         user = request.user
         usuario = Usuario.objects.filter(user__id__exact=user.id).first()
+    except Usuario.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    serializer = UsuarioSerializer(usuario)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def get_puntajes_usuario_juego_actual(request):
+    """
+    Devuelve la lista de puntajes del juego actual del usuario
+    """
+    try:
+        user = request.user
+        usuario = Usuario.objects.filter(user__id__exact=user.id).first()
+        juego = Juego.objects.filter(usuario = usuario, estado = 'EN_PROGRESO').first()
+        puntajes = juego.puntajes
+        serializer = PuntajeSerializer(data = puntajes, many = True)
+        if serializer.is_valid() == False:
+            return Response(data = serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status = status.HTTP_500_INTERNAL_SERVER_ERROR)
     except Usuario.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
         
@@ -107,7 +141,16 @@ class AvatarList(generics.ListCreateAPIView):
     queryset = Avatar.objects.all()
     serializer_class = AvatarSerializer
 
-
 class AvatarDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Avatar.objects.all()
     serializer_class = AvatarSerializer
+
+class NivelList(generics.ListCreateAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = Nivel.objects.all()
+    serializer_class = NivelSerializer
+
+class NivelDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = Nivel.objects.all()
+    serializer_class = NivelSerializer

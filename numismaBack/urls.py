@@ -26,6 +26,8 @@ from rest_framework.authtoken import views as rest_views
 from numisma.views import UsuarioDetail, UsuarioList, get_usuario_authenticated
 from numisma.views import ObjetoDetail, ObjetoList
 from numisma.views import AvatarDetail, AvatarList
+from numisma.views import NivelDetail, NivelList
+from numisma.views import get_puntajes_usuario_juego_actual
 from django.conf.urls.static import static
 from django.views.static import serve
 from django.conf import settings
@@ -44,6 +46,9 @@ urlpatterns = [
     url(r'^api/objetos/$', ObjetoList.as_view()),
     url(r'^api/avatars/(?P<pk>[0-9]+)/$', AvatarDetail.as_view()),
     url(r'^api/avatars/$', AvatarList.as_view()),
+    url(r'^api/niveles/(?P<pk>[0-9]+)/$', NivelDetail.as_view()),
+    url(r'^api/niveles/$', NivelList.as_view()),
+    url(r'^api/niveles/juego/actual/$', get_puntajes_usuario_juego_actual),
     url(r'^media/(?P<path>.*)$', serve, { 'document_root': settings.MEDIA_ROOT, }),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

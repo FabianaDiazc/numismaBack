@@ -1,4 +1,4 @@
-from numisma.models import Usuario, Objeto, Avatar
+from numisma.models import Usuario, Objeto, Avatar, Juego, Puntaje, Nivel
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
@@ -35,7 +35,22 @@ class UsuarioSerializer(serializers.ModelSerializer):
         fields  = fields = ('id', 'username', 'first_name', 'last_name', 'genero', 'numentradas', 'password', 'avatarRecta', 'avatarBalanza')
 
 class ObjetoSerializer(serializers.HyperlinkedModelSerializer):
-
     class Meta:
         model = Objeto
         fields  = fields = ('id', 'nombre', 'imagen', 'valor')
+
+class NivelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nivel
+        fields  = fields = ('id', 'nombre', 'tipo', 'siguiente')
+
+class JuegoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Juego
+        fields  = fields = ('id', 'estado', 'usuario')
+
+class PuntajeSerializer(serializers.ModelSerializer):
+    nivel = NivelSerializer(required = False)
+    class Meta:
+        model = Puntaje
+        fields  = fields = ('id', 'estado', 'nivel')

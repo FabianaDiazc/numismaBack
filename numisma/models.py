@@ -40,3 +40,38 @@ class Avatar(models.Model):
 
     imagen = models.ImageField()
     juego = models.CharField(max_length = 40, choices = TYPE_CHOICES)
+
+class Juego(models.Model):
+    TYPE_CHOICES = (
+        ('EN_PROGRESO', 'EN_PROGRESO'),
+        ('FINALIZADO', 'FINALIZADO'),)
+    
+    estado = models.CharField(max_length = 40, choices = TYPE_CHOICES)
+    usuario = models.ForeignKey('Usuario', related_name='juegos')
+
+class Puntaje(models.Model):
+    TYPE_CHOICES = (
+        ('EN_PROGRESO', 'EN_PROGRESO'),
+        ('FINALIZADO', 'FINALIZADO'),
+        ('BLOQUEADO', 'BLOQUEADO'))
+    estado = models.CharField(max_length = 40, choices = TYPE_CHOICES)
+    juego = models.ForeignKey('Juego', related_name='puntajes')
+    nivel = models.ForeignKey('Nivel', related_name='puntajes')
+
+class Nivel(models.Model):
+    TYPE_CHOICES_JUEGO = (
+        ('RECTA_NUMERICA', 'RECTA_NUMERICA'),
+        ('BALANZA', 'BALANZA'),
+        ('RECTA_NUMERICA_COLOR', 'RECTA_NUMERICA_COLOR'))
+
+    TYPE_CHOICES_TIPO = (
+        ('M', 'MONEDAS'),
+        ('B', 'BILLETES'),
+        ('2', 'MONEDAS_Y_BILLETES'),
+        ('MIN', 'MINIMO'))
+    
+    nombre = models.CharField(max_length = 40, choices = TYPE_CHOICES_JUEGO)
+    tipo = models.CharField(max_length = 40, choices = TYPE_CHOICES_TIPO)
+    siguiente = models.ForeignKey('Nivel', on_delete = models.SET_NULL, null=True, blank=True)
+    
+    
