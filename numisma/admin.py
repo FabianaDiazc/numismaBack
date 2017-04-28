@@ -8,19 +8,20 @@ class UsuarioAdmin(admin.ModelAdmin):
 admin.site.register(Usuario, UsuarioAdmin)
 
 class ObjetoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'nombre', 'valor')
 admin.site.register(Objeto, ObjetoAdmin)
 
 class AvatarAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'juego', 'imagen')
 admin.site.register(Avatar, AvatarAdmin)
 
 class JuegoAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'estado', 'usuario')
 admin.site.register(Juego, JuegoAdmin)
 
 class PuntajeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'estado', 'juego', 'nivel')
+
 admin.site.register(Puntaje, PuntajeAdmin)
 
 class NivelAdmin(admin.ModelAdmin):

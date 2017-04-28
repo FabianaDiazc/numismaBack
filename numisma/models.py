@@ -31,7 +31,9 @@ class Objeto(models.Model):
     nombre = models.CharField(max_length=255)
     imagen = models.ImageField()
     valor = models.IntegerField()
-
+    def __str__(self):
+        return self.nombre + "  " + str(self.valor)
+    
 class Avatar(models.Model):
     TYPE_CHOICES = (
         ('RECTA_NUMERICA', 'RECTA_NUMERICA'),
@@ -48,6 +50,8 @@ class Juego(models.Model):
     
     estado = models.CharField(max_length = 40, choices = TYPE_CHOICES)
     usuario = models.ForeignKey('Usuario', related_name='juegos')
+    def __str__(self):
+        return str(self.id) + "  " + self.estado + " usuario: " + self.usuario.user.username
 
 class Puntaje(models.Model):
     TYPE_CHOICES = (
@@ -73,5 +77,8 @@ class Nivel(models.Model):
     nombre = models.CharField(max_length = 40, choices = TYPE_CHOICES_JUEGO)
     tipo = models.CharField(max_length = 40, choices = TYPE_CHOICES_TIPO)
     siguiente = models.ForeignKey('Nivel', on_delete = models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre + "  " + self.tipo
     
     
