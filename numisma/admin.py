@@ -20,7 +20,7 @@ class JuegoAdmin(admin.ModelAdmin):
 admin.site.register(Juego, JuegoAdmin)
 
 class PuntajeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'estado', 'juego', 'nivel')
+    list_display = ('id', 'estado', 'juego', 'nivel', 'puntos')
 
 admin.site.register(Puntaje, PuntajeAdmin)
 

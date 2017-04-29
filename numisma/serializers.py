@@ -53,4 +53,4 @@ class PuntajeSerializer(serializers.ModelSerializer):
     nivel = NivelSerializer(required = False)
     class Meta:
         model = Puntaje
-        fields  = fields = ('id', 'estado', 'nivel')
+        fields  = fields = ('id', 'estado', 'nivel', 'puntos')

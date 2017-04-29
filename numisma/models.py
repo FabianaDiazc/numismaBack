@@ -59,6 +59,7 @@ class Puntaje(models.Model):
         ('FINALIZADO', 'FINALIZADO'),
         ('BLOQUEADO', 'BLOQUEADO'))
     estado = models.CharField(max_length = 40, choices = TYPE_CHOICES)
+    puntos = models.IntegerField()
     juego = models.ForeignKey('Juego', related_name='puntajes')
     nivel = models.ForeignKey('Nivel', related_name='puntajes')
 
