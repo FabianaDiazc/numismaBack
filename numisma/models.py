@@ -31,6 +31,14 @@ class Objeto(models.Model):
     nombre = models.CharField(max_length=255)
     imagen = models.ImageField()
     valor = models.IntegerField()
+
+    TYPE_CHOICES_TIPO = (
+        ('M', 'MONEDAS'),
+        ('B', 'BILLETES'),
+        ('2', 'MONEDAS_Y_BILLETES'),
+        ('MIN', 'MINIMO'))
+    tipo = models.CharField(max_length = 40, choices = TYPE_CHOICES_TIPO)
+
     def __str__(self):
         return self.nombre + "  " + str(self.valor)
     

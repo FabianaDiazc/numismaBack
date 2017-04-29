@@ -37,7 +37,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class ObjetoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Objeto
-        fields  = fields = ('id', 'nombre', 'imagen', 'valor')
+        fields  = fields = ('id', 'nombre', 'imagen', 'valor', 'tipo')
 
 class NivelSerializer(serializers.ModelSerializer):
     class Meta:

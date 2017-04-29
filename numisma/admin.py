@@ -8,7 +8,7 @@ class UsuarioAdmin(admin.ModelAdmin):
 admin.site.register(Usuario, UsuarioAdmin)
 
 class ObjetoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'valor')
+    list_display = ('id', 'nombre', 'valor', 'tipo')
 admin.site.register(Objeto, ObjetoAdmin)
 
 class AvatarAdmin(admin.ModelAdmin):
