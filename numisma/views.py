@@ -47,9 +47,9 @@ class UsuarioList(APIView):
         juego.save()
         for currNivel in Nivel.objects.all():
             if currNivel.nombre == 'RECTA_NUMERICA' and currNivel.tipo == 'M':
-                puntaje = Puntaje(estado = 'EN_PROGRESO', juego = juego, nivel = currNivel)
+                puntaje = Puntaje(estado = 'EN_PROGRESO', juego = juego, nivel = currNivel, puntos = 5)
             else:
-                puntaje = Puntaje(estado = 'BLOQUEADO', juego = juego, nivel = currNivel)
+                puntaje = Puntaje(estado = 'BLOQUEADO', juego = juego, nivel = currNivel, puntos = 5)
             puntaje.save()
 
 
